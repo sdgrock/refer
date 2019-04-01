@@ -1,0 +1,50 @@
+Create Database Outsystems;
+use Outsystems;
+Create Table Users (UserId int primary key identity(10000,1), NameSesa varchar(15), Username varchar(25), Password varchar(10));
+Create Table PickerStatus (StatusId int primary key identity(1,1), StatusNow varchar(15));
+Create Table Picker (PickerId int primary key identity(1500,1), TOHUTrolleyCode varchar(10), TOLines int, UserId int references Users(UserId), StatusId int references PickerStatus(StatusId));
+
+Insert into Users values('SESA123654','Ramesh','password01');
+Insert into Users values('SESA028104','Chandrajeet','password02');
+Insert into Users values('SESA456912','Yash','password03');
+Insert into Users values('SESA967412','Purav','password04');
+Insert into Users values('SESA247896','Saurish','password05');
+Insert into Users values('SESA007896','Surya','password06');
+Insert into Users values('SESA999896','Prakash','password07');
+
+Select * from Users;
+
+Insert into PickerStatus values('Started');
+Insert into PickerStatus values('OnTrip');
+Insert into PickerStatus values('Stopped');
+Insert into PickerStatus values('Completed');
+
+Select * from PickerStatus;
+
+Insert into Picker values('TO','40','10006','1');
+Insert into Picker values('TO','35','10007','2');
+Insert into Picker values('TO','70','10008','1');
+Insert into Picker values('TO','85','10009','3');
+Insert into Picker values('TO','15','10010','4');
+Insert into Picker values('HU','96','10011','3');
+Insert into Picker values('TROLLEY','105','10012','4');
+
+Select * from Picker;
+
+UPDATE Picker set StatusId = '2' where PickerId = '1504';
+
+Select * from Picker where PickerId = '1504';
+
+
+	go
+	CREATE PROCEDURE [dbo].[uspUpdatePicker] 
+	(
+	@ipv_iPickerID int,
+	@ipv_TohuTrolley varchar(10),
+	@ipv_TOLines int,
+	@ipv_UserId int,
+	@ipv_StatusId int
+	)
+AS
+	update Picker set TOHUTrolleyCode = @ipv_TohuTrolley, TOLines=@ipv_TOLines, UserId=@ipv_UserId, StatusId=@ipv_StatusId where PickerId = @ipv_iPickerID;
+	RETURN
